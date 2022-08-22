@@ -9,4 +9,4 @@ FEN is important because it makes it easy to translate any chess position into a
 
 For this reason, FEN is especially helpful to chess teachers, coaches, trainers, and students. It replaces the need for chess mentors to send large PGN files to their students and speeds up the process of sharing positions, even when people are far apart.
 
-Learn More about FEN (here)[https://www.chess.com/terms/fen-chess#:~:text=FEN%20is%20the%20abbreviation%20of,by%20the%20journalist%20David%20Forsyth.].
+Learn More about FEN [here](https://www.chess.com/terms/fen-chess#:~:text=FEN%20is%20the%20abbreviation%20of,by%20the%20journalist%20David%20Forsyth.).
