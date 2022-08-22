@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canvas - Example</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.5rem;
+        }
+        form {
+            display: flex;
+            align-items: center;
+        }
+        input {
+            padding: .5rem 1rem;
+            font-size: 1rem;
+            width: 270px;
+            margin-left: 10px;
+        }
+        button {
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+        }
+        canvas {
+            background-color: white;
+            border: 15px solid rgb(184,139,74);
+        }
+    </style>
+    <script>
+
+        window.onload = init;
+        function init() {
+            const canvas = document.querySelector('canvas');
+            const ctx = canvas.getContext('2d');
+            let size = 8;
+            let squareWidth = canvas.width / size;
+            let offsetX = 0;
+            let offsetY = 0;
+
+            // let defaultFEN = '8/8/8/8/8/8/8/8 w - - 0 1';
+            let defaultFEN = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+            let defaultFENFinal = defaultFEN.slice(0,-13);
+
+            paintBoard();
+            drawBoard(defaultFENFinal);
+            
+            const inputVal = document.getElementById('fenCode');
+            const submitBtn = document.getElementById('submitBtn');
+
+            submitBtn.addEventListener('click', function(e){
+                e.preventDefault();
+                console.log('here');  
+                defaultFEN = inputVal.value;
+                defaultFENFinal = defaultFEN.slice(0,-13);
+                // clearBoard = true;
+                // drawBoard();
+                paintBoard();
+                drawBoard(defaultFENFinal)
+            });
+
+
+
+            function paintBoard() {
+                let size = 8;
+                let squareWidth = canvas.width / size;
+                let offsetX = 0;
+                let offsetY = 0;
+                for(let y = 0; y < size; y ++){
+                    for(let x = 0; x < size; x ++){
+                        if((x + y) % 2 == 0){
+                            ctx.fillStyle = 'rgb(227,193,111)';
+                        }
+                        else{
+                            ctx.fillStyle = 'rgb(184,139,74)';
+                        }
+                        ctx.fillRect(offsetX, offsetY, squareWidth, squareWidth);
+                        offsetX += squareWidth;
+                        
+                    }
+                    offsetX = 0;
+                    offsetY += squareWidth;
+                }
+            }
+
+            function drawBoard(defaultFENFinal) {
+                let scaleFactor = 50;
+                const factor = size / 16;
+                let initialX = squareWidth / (size * factor);
+                let initialY = squareWidth / size;
+                let imgOffsetX = 0;
+                let imgOffsetY = 0;
+    
+                let piece;
+    
+                for(let a = 0; a < defaultFENFinal.length; a ++){
+                    if(defaultFENFinal[a] == 'r') {
+                        piece = rookBlack;        
+                    }
+                    else if(defaultFENFinal[a] == 'n'){
+                        piece = knightBlack;
+                    }
+                    else if(defaultFENFinal[a] == 'b'){
+                        piece = bishopBlack;
+                    }
+                    else if(defaultFENFinal[a] == 'q'){
+                        piece = queenBlack;
+                    }
+                    else if(defaultFENFinal[a] == 'k'){
+                        piece = kingBlack;
+                    }
+                    else if(defaultFENFinal[a] == '/'){
+                        piece = '/';
+                    }
+                    else if(defaultFENFinal[a] == 'p'){
+                        piece = pawnBlack;
+                    }
+                    else if(defaultFENFinal[a] > 0 && defaultFENFinal[a] < 9){
+                        piece = Number(defaultFENFinal[a]);
+                    }
+                    else if(defaultFENFinal[a] == 'R') {
+                        piece = rookWhite;        
+                    }
+                    else if(defaultFENFinal[a] == 'N'){
+                        piece = knightWhite;
+                    }
+                    else if(defaultFENFinal[a] == 'B'){
+                        piece = bishopWhite;
+                    }
+                    else if(defaultFENFinal[a] == 'Q'){
+                        piece = queenWhite;
+                    }
+                    else if(defaultFENFinal[a] == 'K'){
+                        piece = kingWhite;
+                    }
+                    else if(defaultFENFinal[a] == 'P'){
+                        piece = pawnWhite;
+                    }
+                    else if(defaultFENFinal[a] > 0 && defaultFENFinal[a] < 9){
+                        piece = Number(defaultFENFinal[a]);
+                    }
+                    
+                    if(typeof(piece) != 'number' && piece != '/'){
+                        ctx.drawImage(piece, initialX + imgOffsetX, initialY + imgOffsetY, .63 * scaleFactor, scaleFactor);
+                        imgOffsetX += squareWidth;
+                    }
+                    else if(piece == '/'){
+                        imgOffsetX = 0;
+                        imgOffsetY += squareWidth;
+                    }
+                    else if(typeof(piece) == 'number'){
+                        for(let c = 0; c < piece; c ++){
+                            imgOffsetX += squareWidth;
+                        }
+                    }
+                }
+            }
+        } 
+    </script>
+</head>
+<body>
+    <canvas width="500px" height="500px">
+        <img src="/img/pawn-black.svg" id="pawnBlack">
+        <img src="/img/knight-black.svg" id="knightBlack">
+        <img src="/img/bishop-black.svg" id="bishopBlack">
+        <img src="/img/rook-black.svg" id="rookBlack">
+        <img src="/img/queen-black.svg" id="queenBlack">
+        <img src="/img/king-black.svg" id="kingBlack">
+
+        <img src="/img/pawn-white.svg" id="pawnWhite">
+        <img src="/img/knight-white.svg" id="knightWhite">
+        <img src="/img/bishop-white.svg" id="bishopWhite">
+        <img src="/img/rook-white.svg" id="rookWhite">
+        <img src="/img/queen-white.svg" id="queenWhite">
+        <img src="/img/king-white.svg" id="kingWhite">
+
+        <img src="/img/blank.svg" id="blank">
+    </canvas>
+    <br>
+    <form action="">
+        <label for="fen-code">Enter FEN Code: </label>
+        <input type="text" name="fen-code" id="fenCode">
+        <button type="submit" id="submitBtn"> 
+            <svg xmlns="http://www.w3.org/2000/svg" height="48" width="48"><path d="m24 40-2.1-2.15L34.25 25.5H8v-3h26.25L21.9 10.15 24 8l16 16Z"/></svg>
+        </button>
+    </form>
+</body>
+</html>
